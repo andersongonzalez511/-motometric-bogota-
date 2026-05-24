@@ -11,7 +11,7 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(
     page_title="MotoMetric - Concesionarios Bogotá", 
-    page_icon="🏍️",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="auto"
 )
@@ -202,7 +202,7 @@ def crear_mapa_concesionarios(concesionarios, centro_lat=4.7110, centro_lon=-74.
         
         popup_html = f"""
         <div style="font-family: Arial, sans-serif; min-width: 250px;">
-            <h4 style="color: #333; margin-bottom: 5px;">🏍️ {concesionario['nombre']}</h4>
+            <h4 style="color: #333; margin-bottom: 5px;"> {concesionario['nombre']}</h4>
             <hr style="margin: 5px 0;">
             <p style="margin: 5px 0;">
                 <strong>🏢 Marca:</strong> {marca}<br>
@@ -228,7 +228,7 @@ def crear_mapa_concesionarios(concesionarios, centro_lat=4.7110, centro_lon=-74.
 # MODALES CON FUNCIONALIDADES COMPLETAS
 # ============================================
 
-@st.dialog("🏍️ Concesionarios en Bogotá")
+@st.dialog(" Concesionarios en Bogotá")
 def mostrar_concesionarios(marca_moto=None, modelo_moto=None):
     if marca_moto and marca_moto != "Seleccionar...":
         titulo = f"Concesionarios {marca_moto} en Bogotá"
@@ -359,25 +359,23 @@ def mostrar_detalles_tecnicos(id_moto):
             st.subheader(f"{d['marca']} {d['referencia']}")
             st.title(f":green[${int(d['precio_venta']):,.0f}]".replace(",", "."))
             if d.get('tipo_moto'):
-                st.caption(f"🏍️ Tipo: {d['tipo_moto']}")
+                st.caption(f" Tipo: {d['tipo_moto']}")
             st.write(f"**Cilindraje:** {d['cilindraje_cc']} cc")
 
         st.divider()
-        st.subheader("📊 Especificaciones Técnicas")
+        st.subheader(" Especificaciones Técnicas")
         
-        c1, c2, c3 = st.columns(3)
+        c1, c2= st.columns(2)
         with c1:
-            st.markdown(f"**⚡ Potencia:** {d.get('potencia') or 'Consultar'}")
-            st.markdown(f"**🛑 Freno Delantero:** {d.get('frenos_delantero') or 'Consultar'}")
-            st.markdown(f"**🛑 Freno Trasero:** {d.get('frenos_trasero') or 'Consultar'}")
+            st.markdown(f"** Potencia:** {d.get('potencia') or 'Consultar'}")
+            st.markdown(f"** Freno Delantero:** {d.get('frenos_delantero') or 'Consultar'}")
+            st.markdown(f"** Freno Trasero:** {d.get('frenos_trasero') or 'Consultar'}")
+             st.markdown(f"**⚖️ Peso:** {d.get('peso') or 'Consultar'}")
         with c2:
-            st.markdown(f"**🔧 Suspensión:** {d.get('suspension') or 'Consultar'}")
-            st.markdown(f"**🔑 Encendido:** {d.get('encendido') or 'Consultar'}")
-            st.markdown(f"**⛽ Alimentación:** {d.get('sistema_alimentacion') or 'Consultar'}")
-        with c3:
-            st.markdown(f"**⚖️ Peso:** {d.get('peso') or 'Consultar'}")
-            st.markdown(f"**🛞 Neumáticos:** {d.get('neumaticos') or 'Consultar'}")
-            st.markdown(f"**💡 Luces:** {d.get('luces') or 'Consultar'}")
+            st.markdown(f"** Suspensión:** {d.get('suspension') or 'Consultar'}")
+            st.markdown(f"** Encendido:** {d.get('encendido') or 'Consultar'}")
+            st.markdown(f"** Alimentación:** {d.get('sistema_alimentacion') or 'Consultar'}")
+           
     else:
         st.error("No se encontró la información técnica de esta moto.")
 
@@ -385,7 +383,7 @@ def mostrar_detalles_tecnicos(id_moto):
 # SIMULADOR DE CRÉDITO (COMPLETO)
 # ============================================
 
-@st.dialog("💰 Simulador de Crédito")
+@st.dialog(" Simulador de Crédito")
 def simulador_credito(referencia, precio_moto):
     st.write(f"Simulando crédito para: **{referencia}**")
     
@@ -404,17 +402,17 @@ def simulador_credito(referencia, precio_moto):
     col1, col2 = st.columns(2)
     with col1:
         cuota_inicial = st.number_input(
-            "💰 Valor Cuota Inicial ($)", 
+            " Valor Cuota Inicial ($)", 
             min_value=0, 
             max_value=max_inicial, 
             value=0,
             step=100000,
             key=f"val_ini_{referencia}"
         )
-        meses = st.select_slider("📅 Plazo (meses)", options=[12, 24, 36, 48, 60], key=f"sld_mes_{referencia}")
+        meses = st.select_slider("Plazo (meses)", options=[12, 24, 36, 48, 60], key=f"sld_mes_{referencia}")
     
     with col2:
-        tasa_ea = st.number_input("📈 Tasa Interés EA (%)", value=24.12, min_value=0.0, max_value=100.0, step=0.1, key=f"tasa_{referencia}")
+        tasa_ea = st.number_input(" Tasa Interés EA (%)", value=24.12, min_value=0.0, max_value=100.0, step=0.1, key=f"tasa_{referencia}")
         tasa_m = ((1 + (tasa_ea / 100))**(1/12)) - 1
 
     monto_financia = precio_limpio - cuota_inicial
@@ -430,19 +428,19 @@ def simulador_credito(referencia, precio_moto):
 
     st.divider()
     col_res1, col_res2, col_res3 = st.columns(3)
-    col_res1.metric("🏍️ Valor de la moto", f"${precio_limpio:,.0f}".replace(",", "."))
-    col_res2.metric("💵 Monto a financiar", f"${int(monto_financia):,.0f}".replace(",", "."))
-    col_res3.metric("📆 Cuota Mensual", f"${int(cuota):,.0f}".replace(",", "."), delta="Sujeto a estudio")
+    col_res1.metric("Valor de la moto", f"${precio_limpio:,.0f}".replace(",", "."))
+    col_res2.metric(" Monto a financiar", f"${int(monto_financia):,.0f}".replace(",", "."))
+    col_res3.metric(" Cuota Mensual", f"${int(cuota):,.0f}".replace(",", "."), delta="Sujeto a estudio")
     
     if cuota > 0:
         total_pagar = cuota * meses + cuota_inicial
-        st.info(f"💰 **Total a pagar:** ${int(total_pagar):,.0f}".replace(",", "."))
+        st.info(f"**Total a pagar:** ${int(total_pagar):,.0f}".replace(",", "."))
 
 # ============================================
 # TABLA DE COMPARACIÓN DE PLAZOS (COMPLETA)
 # ============================================
 
-@st.dialog("📊 Tabla de Comparación de Plazos")
+@st.dialog("Tabla de Comparación de Plazos")
 def comparar_plazos(referencia, precio_moto):
     st.write(f"Proyecciones de pagos para: **{referencia}**")
     
@@ -452,14 +450,14 @@ def comparar_plazos(referencia, precio_moto):
         st.error("Error al procesar el precio")
         return
     
-    porcentaje_financia = st.slider("📊 Porcentaje a financiar:", 30, 90, 70, 5, key=f"porc_{referencia}")
+    porcentaje_financia = st.slider(" Porcentaje a financiar:", 30, 90, 70, 5, key=f"porc_{referencia}")
     monto_f = precio_limpio * (porcentaje_financia / 100)
     cuota_inicial_propuesta = precio_limpio - monto_f
     
-    tasa_ea = st.number_input("📈 Tasa Interés EA (%):", value=24.12, min_value=0.0, step=0.5, key=f"tasa_tabla_{referencia}")
+    tasa_ea = st.number_input(" Tasa Interés EA (%):", value=24.12, min_value=0.0, step=0.5, key=f"tasa_tabla_{referencia}")
     tasa_m = ((1 + (tasa_ea / 100))**(1/12)) - 1
     
-    st.info(f"💵 **Cuota inicial sugerida:** ${int(cuota_inicial_propuesta):,.0f}".replace(",", "."))
+    st.info(f" **Cuota inicial sugerida:** ${int(cuota_inicial_propuesta):,.0f}".replace(",", "."))
     
     data = []
     for m in [12, 24, 36, 48, 60]:
@@ -525,16 +523,16 @@ def mostrar_matriz(lista_datos, prefijo):
         
                         c1, c2 = st.columns(2)
                         with c1:
-                            if st.button("🔧 Ficha Técnica", key=f"det_{prefijo}_{item['id']}", use_container_width=True):
+                            if st.button("Ficha Técnica", key=f"det_{prefijo}_{item['id']}", use_container_width=True):
                                 mostrar_detalles_tecnicos(item['id'])
-                            if st.button("💰 Crédito", key=f"cre_{prefijo}_{item['id']}", use_container_width=True):
+                            if st.button(" Crédito", key=f"cre_{prefijo}_{item['id']}", use_container_width=True):
                                 simulador_credito(item['modelo'], item['precio'])
                         
                         with c2:
-                            if st.button("📍 Concesionarios", key=f"con_{prefijo}_{item['id']}", use_container_width=True):
+                            if st.button(" Concesionarios", key=f"con_{prefijo}_{item['id']}", use_container_width=True):
                                 marca_moto = item['modelo'].split()[0] if ' ' in item['modelo'] else item['modelo']
                                 mostrar_concesionarios(marca_moto, item['modelo'])
-                            if st.button("📊 Tabla", key=f"tab_{prefijo}_{item['id']}", use_container_width=True):
+                            if st.button(" Tabla", key=f"tab_{prefijo}_{item['id']}", use_container_width=True):
                                 comparar_plazos(item['modelo'], item['precio'])
 
 # ============================================
@@ -546,14 +544,14 @@ def main():
     if os.path.exists("logo.png"):
         st.sidebar.image("logo.png", use_container_width=True)
     else:
-        st.sidebar.title("🏍️ MotoMetric")
+        st.sidebar.title(" MotoMetric")
 
-    st.sidebar.title("📋 Menú de Consultas")
+    st.sidebar.title(" Menú de Consultas")
 
     # Filtro por Precio
     rangos = [f"{i}'000.000 - {i+3}'000.000" for i in range(4, 34, 3)]
     rango_sel = st.sidebar.selectbox(
-        "💰 Filtrar por Precio:", 
+        " Filtrar por Precio:", 
         ["Seleccionar..."] + rangos, 
         key="v_precio", 
         on_change=limpiar_filtros, 
@@ -563,7 +561,7 @@ def main():
     # Filtro por Marca
     marcas_db = obtener_marcas()
     marca_sel = st.sidebar.selectbox(
-        "🏭 Consultar Marca:", 
+        " Consultar Marca:", 
         ["Seleccionar..."] + marcas_db, 
         key="v_marca", 
         on_change=limpiar_filtros, 
@@ -583,7 +581,7 @@ def main():
     # Filtro por Tipo de Moto
     tipos_db = obtener_tipos_moto()
     tipo_sel = st.sidebar.selectbox(
-        "🏍️ Filtrar por Tipo:", 
+        " Filtrar por Tipo:", 
         tipos_db, 
         key="v_tipo", 
         on_change=limpiar_filtros, 
@@ -592,9 +590,9 @@ def main():
 
     # Botones de concesionarios en sidebar
     st.sidebar.divider()
-    st.sidebar.subheader("📍 Concesionarios Bogotá")
+    st.sidebar.subheader(" Concesionarios Bogotá")
 
-    if st.sidebar.button("🗺️ Ver Todos los Concesionarios", use_container_width=True):
+    if st.sidebar.button(" Ver Todos los Concesionarios", use_container_width=True):
         mostrar_concesionarios()
 
     if st.sidebar.button("🔍 Concesionario más cercano", use_container_width=True):
@@ -671,14 +669,14 @@ def main():
         if datos_db:
             col_est1, col_est2, col_est3 = st.columns(3)
             with col_est1:
-                st.metric("📊 Total modelos", len(datos_db))
+                st.metric(" Total modelos", len(datos_db))
             with col_est2:
                 marcas_unicas = len(set(d['marca'] for d in datos_db))
-                st.metric("🏭 Marcas disponibles", marcas_unicas)
+                st.metric(" Marcas disponibles", marcas_unicas)
             with col_est3:
                 precio_min = min(d['precio'] for d in datos_db)
                 precio_max = max(d['precio'] for d in datos_db)
-                st.metric("💰 Rango de precios", f"${int(precio_min):,.0f} - ${int(precio_max):,.0f}".replace(",", "."))
+                st.metric(" Rango de precios", f"${int(precio_min):,.0f} - ${int(precio_max):,.0f}".replace(",", "."))
             
             st.divider()
             motos = [{
@@ -716,30 +714,30 @@ def main():
                 "imagen": d['url_imagen'],
                 "tipo": d['tipo_moto']
             } for d in datos_db]
-            st.subheader(f"💰 Motos en rango de precio: {rango_sel} ({len(motos)} modelos)")
+            st.subheader(f" Motos en rango de precio: {rango_sel} ({len(motos)} modelos)")
             mostrar_matriz(motos, "prc")
         else:
             st.warning(f"No se encontraron motos en el rango de precio {rango_sel}")
 
     # PÁGINA DE INICIO (sin filtros)
     else:
-        st.info("🏍️ **¡Bienvenido a MotoMetric Bogotá!** Selecciona un criterio en el panel lateral para explorar el catálogo de motos.")
+        st.info(" **¡Bienvenido a MotoMetric Bogotá!** Selecciona un criterio en el panel lateral para explorar el catálogo de motos.")
         
         col1, col2, col3, col4 = st.columns(4)
         
         total_motos = ejecutar_consulta("SELECT COUNT(*) as total FROM motos_ficha_tecnica")
         if total_motos:
-            col1.metric("🏍️ Total Motos", total_motos[0]['total'])
+            col1.metric(" Total Motos", total_motos[0]['total'])
         
         total_marcas = ejecutar_consulta("SELECT COUNT(*) as total FROM marcas")
         if total_marcas:
-            col2.metric("🏭 Marcas", total_marcas[0]['total'])
+            col2.metric(" Marcas", total_marcas[0]['total'])
         
         total_cons, localidades = obtener_resumen_concesionarios()
-        col3.metric("📍 Concesionarios", total_cons)
+        col3.metric(" Concesionarios", total_cons)
         
         st.divider()
-        st.subheader("🌟 Concesionarios destacados en Bogotá")
+        st.subheader("Concesionarios destacados en Bogotá")
         
         concesionarios_quick = obtener_concesionarios_por_marca(None, None)[:6]
         if concesionarios_quick:
