@@ -41,36 +41,29 @@ st.markdown("""
         border-radius: 10px;
         border: 1px solid #ddd;
     }
-    
-    /* Estilo para el logo en el header */
-    .logo-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        background-color: #f0f2f6;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-    .logo-container img {
-        max-height: 120px;
-        width: auto;
-    }
 </style>
 """, unsafe_allow_html=True)
 
-# --- FUNCION PARA MOSTRAR LOGO EN CABECERA ---
-def mostrar_logo_cabecera():
-    """Muestra el logo en la parte principal de la app"""
+# --- FUNCION PARA MOSTRAR LOGO EN AMBAS PARTES ---
+def mostrar_logos():
+    """Muestra el logo tanto en la pantalla principal como en el sidebar"""
     ruta_actual = os.path.dirname(__file__)
     ruta_logo = os.path.join(ruta_actual, "logo.png")
     
-    # Crear contenedor para el logo
-    col1, col2, col3 = st.columns([1, 2, 1])
+    # ============================================
+    # LOGO EN SIDEBAR (BARRA LATERAL)
+    # ============================================
+    if os.path.exists(ruta_logo):
+        st.sidebar.image(ruta_logo, use_container_width=True)
+    else:
+        st.sidebar.title("🏍️ MotoMetric")
     
+    # ============================================
+    # LOGO EN PANTALLA PRINCIPAL (CABECERA)
+    # ============================================
+    col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         if os.path.exists(ruta_logo):
-            # Mostrar logo centrado
             st.image(ruta_logo, use_container_width=True)
             st.markdown("<br>", unsafe_allow_html=True)
         else:
@@ -581,17 +574,13 @@ def mostrar_matriz(lista_datos, prefijo):
 
 def main():
     # ============================================
-    # LOGO EN CABECERA (PARTE PRINCIPAL)
+    # MOSTRAR LOGO EN AMBAS PARTES
     # ============================================
-    mostrar_logo_cabecera()
+    mostrar_logos()
     
-    # Logo en sidebar (opcional, comentado para evitar duplicado)
-    # ruta_logo = os.path.join(os.path.dirname(__file__), "logo.png")
-    # if os.path.exists(ruta_logo):
-    #     st.sidebar.image(ruta_logo, use_container_width=True)
-    # else:
-    #     st.sidebar.title("MotoMetric")
-
+    # ============================================
+    # MENU DE CONSULTAS (SIDEBAR)
+    # ============================================
     st.sidebar.title("Menu de Consultas")
 
     # Filtro por Precio
