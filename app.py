@@ -41,8 +41,48 @@ st.markdown("""
         border-radius: 10px;
         border: 1px solid #ddd;
     }
+    
+    /* Estilo para el logo en el header */
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        background-color: #f0f2f6;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .logo-container img {
+        max-height: 120px;
+        width: auto;
+    }
 </style>
 """, unsafe_allow_html=True)
+
+# --- FUNCION PARA MOSTRAR LOGO EN CABECERA ---
+def mostrar_logo_cabecera():
+    """Muestra el logo en la parte principal de la app"""
+    ruta_actual = os.path.dirname(__file__)
+    ruta_logo = os.path.join(ruta_actual, "logo.png")
+    
+    # Crear contenedor para el logo
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col2:
+        if os.path.exists(ruta_logo):
+            # Mostrar logo centrado
+            st.image(ruta_logo, use_container_width=True)
+            st.markdown("<br>", unsafe_allow_html=True)
+        else:
+            # Si no hay logo, mostrar titulo
+            st.markdown("""
+            <div style="text-align: center; padding: 20px; background-color: #f0f2f6; border-radius: 10px;">
+                <h1 style="color: #1976D2; margin: 0;">🏍️ MotoMetric</h1>
+                <p style="color: #666; margin: 0;">Bogotá - Colombia</p>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    st.divider()
 
 # --- CONEXION A BASE DE DATOS REMOTA ---
 def get_db_connection():
@@ -202,7 +242,7 @@ def crear_mapa_concesionarios(concesionarios, centro_lat=4.7110, centro_lon=-74.
         
         popup_html = f"""
         <div style="font-family: Arial, sans-serif; min-width: 250px;">
-            <h4 style="color: #333; margin-bottom: 5px;"> {concesionario['nombre']}</h4>
+            <h4 style="color: #333; margin-bottom: 5px;">{concesionario['nombre']}</h4>
             <hr style="margin: 5px 0;">
             <p style="margin: 5px 0;">
                 <strong>Marca:</strong> {marca}<br>
@@ -540,11 +580,17 @@ def mostrar_matriz(lista_datos, prefijo):
 # ============================================
 
 def main():
-    # Logo en sidebar
-    if os.path.exists("logo.png"):
-        st.sidebar.image("logo.png", use_container_width=True)
-    else:
-        st.sidebar.title("MotoMetric")
+    # ============================================
+    # LOGO EN CABECERA (PARTE PRINCIPAL)
+    # ============================================
+    mostrar_logo_cabecera()
+    
+    # Logo en sidebar (opcional, comentado para evitar duplicado)
+    # ruta_logo = os.path.join(os.path.dirname(__file__), "logo.png")
+    # if os.path.exists(ruta_logo):
+    #     st.sidebar.image(ruta_logo, use_container_width=True)
+    # else:
+    #     st.sidebar.title("MotoMetric")
 
     st.sidebar.title("Menu de Consultas")
 
