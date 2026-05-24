@@ -11,7 +11,7 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(
     page_title="MotoMetric - Concesionarios Bogotá", 
-    page_icon="🏍️",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="auto"
 )
@@ -233,7 +233,7 @@ def crear_mapa_concesionarios(concesionarios, centro_lat=4.7110, centro_lon=-74.
     return m
 
 # --- MODALES (DIALOGS) ---
-@st.dialog("🏍️ Concesionarios en Bogotá")
+@st.dialog("Concesionarios en Bogotá")
 def mostrar_concesionarios(marca_moto=None, modelo_moto=None):
     """Modal que muestra el mapa de concesionarios de Bogotá"""
     if marca_moto and marca_moto != "Seleccionar...":
@@ -376,12 +376,12 @@ def mostrar_matriz(lista_datos, prefijo):
         
                         c1, c2 = st.columns(2)
                         with c1:
-                            st.button("📊 Ficha Técnica", key=f"det_{prefijo}_{item['id']}", use_container_width=True)
-                            st.button("💰 Crédito", key=f"cre_{prefijo}_{item['id']}", use_container_width=True)
+                            st.button(" Ficha Técnica", key=f"det_{prefijo}_{item['id']}", use_container_width=True)
+                            st.button(" Crédito", key=f"cre_{prefijo}_{item['id']}", use_container_width=True)
                         
                         with c2:
-                            st.button("📍 Concesionarios", key=f"con_{prefijo}_{item['id']}", use_container_width=True)
-                            st.button("📈 Tabla", key=f"tab_{prefijo}_{item['id']}", use_container_width=True)
+                            st.button("Concesionarios", key=f"con_{prefijo}_{item['id']}", use_container_width=True)
+                            st.button(" Tabla", key=f"tab_{prefijo}_{item['id']}", use_container_width=True)
 
 # --- INTERFAZ PRINCIPAL ---
 def main():
@@ -389,14 +389,14 @@ def main():
     if os.path.exists("logo.png"):
         st.sidebar.image("logo.png", use_container_width=True)
     else:
-        st.sidebar.title("🏍️ MotoMetric")
+        st.sidebar.title(" MotoMetric")
 
-    st.sidebar.title("📋 Menú de Consultas")
+    st.sidebar.title("Menú de Consultas")
 
     # Filtro por Precio
     rangos = [f"{i}'000.000 - {i+3}'000.000" for i in range(4, 34, 3)]
     rango_sel = st.sidebar.selectbox(
-        "💰 Filtrar por Precio:", 
+        " Filtrar por Precio:", 
         ["Seleccionar..."] + rangos, 
         key="v_precio", 
         on_change=limpiar_filtros, 
@@ -406,7 +406,7 @@ def main():
     # Filtro por Marca
     marcas_db = obtener_marcas()
     marca_sel = st.sidebar.selectbox(
-        "🏭 Consultar Marca:", 
+        " Consultar Marca:", 
         ["Seleccionar..."] + marcas_db, 
         key="v_marca", 
         on_change=limpiar_filtros, 
@@ -426,7 +426,7 @@ def main():
     # Filtro por Tipo de Moto
     tipos_db = obtener_tipos_moto()
     tipo_sel = st.sidebar.selectbox(
-        "🏍️ Filtrar por Tipo:", 
+        " Filtrar por Tipo:", 
         tipos_db, 
         key="v_tipo", 
         on_change=limpiar_filtros, 
@@ -435,12 +435,12 @@ def main():
 
     # Botones de concesionarios en sidebar
     st.sidebar.divider()
-    st.sidebar.subheader("📍 Concesionarios Bogotá")
+    st.sidebar.subheader("Concesionarios Bogotá")
 
-    if st.sidebar.button("🗺️ Ver Todos los Concesionarios", use_container_width=True):
+    if st.sidebar.button(" Ver Todos los Concesionarios", use_container_width=True):
         mostrar_concesionarios()
 
-    if st.sidebar.button("🔍 Concesionario más cercano", use_container_width=True):
+    if st.sidebar.button("Concesionario más cercano", use_container_width=True):
         mostrar_concesionario_cercano()
 
     # --- CONTENIDO PRINCIPAL ---
@@ -448,21 +448,21 @@ def main():
     
     # Mensaje de bienvenida
     if all(v == "Seleccionar..." for v in [marca_sel, cc_sel, tipo_sel, rango_sel]):
-        st.info("🏍️ **¡Bienvenido a MotoMetric Bogotá!** Selecciona un criterio en el panel lateral para explorar el catálogo de motos.")
+        st.info("**¡Bienvenido a MotoMetric Bogotá!** Selecciona un criterio en el panel lateral para explorar el catálogo de motos.")
         
         # Mostrar estadísticas rápidas
         col1, col2, col3 = st.columns(3)
         
         total_motos = ejecutar_consulta("SELECT COUNT(*) as total FROM motos_ficha_tecnica")
         if total_motos:
-            col1.metric("🏍️ Total Motos", total_motos[0]['total'])
+            col1.metric(" Total Motos", total_motos[0]['total'])
         
         total_marcas = ejecutar_consulta("SELECT COUNT(*) as total FROM marcas")
         if total_marcas:
-            col2.metric("🏭 Marcas", total_marcas[0]['total'])
+            col2.metric(" Marcas", total_marcas[0]['total'])
         
         total_cons, localidades = obtener_resumen_concesionarios()
-        col3.metric("📍 Concesionarios", total_cons)
+        col3.metric(" Concesionarios", total_cons)
     
     # FILTRO POR MARCA
     if marca_sel != "Seleccionar...":
@@ -533,14 +533,14 @@ def main():
         if datos_db:
             col_est1, col_est2, col_est3 = st.columns(3)
             with col_est1:
-                st.metric("📊 Total modelos", len(datos_db))
+                st.metric("Total modelos", len(datos_db))
             with col_est2:
                 marcas_unicas = len(set(d['marca'] for d in datos_db))
-                st.metric("🏭 Marcas disponibles", marcas_unicas)
+                st.metric("Marcas disponibles", marcas_unicas)
             with col_est3:
                 precio_min = min(d['precio'] for d in datos_db)
                 precio_max = max(d['precio'] for d in datos_db)
-                st.metric("💰 Rango de precios", f"${int(precio_min):,.0f} - ${int(precio_max):,.0f}".replace(",", "."))
+                st.metric(" Rango de precios", f"${int(precio_min):,.0f} - ${int(precio_max):,.0f}".replace(",", "."))
             
             st.divider()
             motos = [{
@@ -578,7 +578,7 @@ def main():
                 "imagen": d['url_imagen'],
                 "tipo": d['tipo_moto']
             } for d in datos_db]
-            st.subheader(f"💰 Motos en rango de precio: {rango_sel} ({len(motos)} modelos)")
+            st.subheader(f" Motos en rango de precio: {rango_sel} ({len(motos)} modelos)")
             mostrar_matriz(motos, "prc")
         else:
             st.warning(f"No se encontraron motos en el rango de precio {rango_sel}")
